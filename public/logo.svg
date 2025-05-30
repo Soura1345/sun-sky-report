@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Sun -->
+  <circle cx="256" cy="256" r="120" fill="#FFD700"/>
+  <!-- Cloud -->
+  <path d="M340 220 
+           C380 220 420 260 420 300
+           C420 340 380 380 340 380
+           L180 380
+           C140 380 100 340 100 300
+           C100 260 140 220 180 220
+           C180 180 220 140 260 140
+           C300 140 340 180 340 220Z" 
+        fill="#FFFFFF" 
+        filter="drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.1))"/>
+</svg> 
