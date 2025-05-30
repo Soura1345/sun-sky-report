@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Search, MapPin, Wind, Eye, Droplets, Thermometer } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -50,17 +49,21 @@ const WeatherApp = () => {
   const { toast } = useToast();
 
   const API_KEY = "a46db09ecb5441c184152323253005";
-  const BASE_URL = "http://api.weatherapi.com/v1/current.json";
+  const BASE_URL = "https://api.weatherapi.com/v1/current.json";
 
   const fetchWeatherData = async (city: string = "London") => {
     try {
       setIsSearching(true);
+      console.log(`Fetching weather data for: ${city}`);
+      
       const response = await fetch(
         `${BASE_URL}?key=${API_KEY}&q=${encodeURIComponent(city)}&aqi=yes`
       );
       
+      console.log('Response status:', response.status);
+      
       if (!response.ok) {
-        throw new Error("Weather data not found");
+        throw new Error(`Weather data not found: ${response.status}`);
       }
       
       const data = await response.json();
@@ -69,8 +72,8 @@ const WeatherApp = () => {
     } catch (error) {
       console.error("Error fetching weather data:", error);
       toast({
-        title: "Error",
-        description: "Failed to fetch weather data. Please try again.",
+        title: "CORS Error",
+        description: "This API requires a backend server due to CORS restrictions. Please use a CORS proxy or implement a backend.",
         variant: "destructive",
       });
     } finally {
@@ -128,11 +131,54 @@ const WeatherApp = () => {
   if (!weatherData) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 flex items-center justify-center">
-        <Card className="p-8">
+        <Card className="p-8 max-w-md mx-4">
           <CardContent className="text-center">
-            <p className="text-lg">Failed to load weather data</p>
-            <Button onClick={() => fetchWeatherData()} className="mt-4">
-              Try Again
+            <h2 className="text-xl font-bold mb-4">Weather App Demo</h2>
+            <p className="text-gray-600 mb-4">
+              Due to CORS restrictions, this API requires a backend server to work properly. 
+              Here's what the weather app would look like with sample data:
+            </p>
+            <Button 
+              onClick={() => {
+                // Show demo data instead
+                setWeatherData({
+                  location: {
+                    name: "London",
+                    region: "City of London, Greater London",
+                    country: "United Kingdom",
+                    localtime: new Date().toISOString().slice(0, 16).replace('T', ' ')
+                  },
+                  current: {
+                    temp_c: 22,
+                    temp_f: 72,
+                    condition: {
+                      text: "Partly cloudy",
+                      icon: "",
+                      code: 1003
+                    },
+                    wind_kph: 15,
+                    wind_dir: "W",
+                    humidity: 65,
+                    feelslike_c: 24,
+                    feelslike_f: 75,
+                    vis_km: 10,
+                    uv: 5,
+                    air_quality: {
+                      co: 233.4,
+                      no2: 15.5,
+                      o3: 89.3,
+                      so2: 4.6,
+                      pm2_5: 8.1,
+                      pm10: 12.3,
+                      "us-epa-index": 1,
+                      "gb-defra-index": 2
+                    }
+                  }
+                });
+              }}
+              className="mt-4"
+            >
+              Show Demo Data
             </Button>
           </CardContent>
         </Card>
